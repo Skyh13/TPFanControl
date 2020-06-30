@@ -65,14 +65,21 @@ int iTimeout = 100;
 int iTimeoutBuf = 1000;
 int	iTime= 0;
 int iTick= 10;
-int numSetupTries = 50;
+int numSetupTries = 5;
 
 while (numSetupTries > 0) {
 
-	for (iTime = 0; iTime < iTimeoutBuf; iTime+= iTick) {	// wait for full buffers to clear
+	for (iTime = 0; iTime < iTimeoutBuf; iTime += iTick) {	// wait for full buffers to clear
 		data = (char)ReadPort(EC_CTRLPORT) & 0xff;			// or timeout iTimeoutBuf = 1000
-		if ( !(data & (EC_STAT_IBF | EC_STAT_OBF)) ) break;
-		::Sleep(iTick);}
+		if (!(data & (EC_STAT_IBF | EC_STAT_OBF))) {
+			iOK = true;
+			break;
+		}
+		::Sleep(iTick);
+	}
+
+	if (!iOK) return 0;
+	iOK = false;
 
 	WritePort(EC_CTRLPORT, EC_CTRLPORT_READ);			// tell 'em we want to "READ"
 
@@ -102,7 +109,7 @@ while (numSetupTries > 0) {
 	// start the read process over again
 	numSetupTries -= 1;
 }
-	if (!iOK) return 0;
+if (!iOK) return 0;
 
 *pdata = ReadPort(EC_DATAPORT);
 
@@ -118,7 +125,6 @@ return 1;
 int FANCONTROL::WriteByteToEC(int offset, char NewData)
 {
 char data= -1;
-char data2= -1;
 int iOK = false;
 int iTimeout = 100;
 int iTimeoutBuf = 1000;
@@ -130,20 +136,12 @@ while (numSetupTries > 0) {
 
 	for (iTime = 0; iTime < iTimeoutBuf; iTime += iTick) {	// wait for full buffers to clear
 		data = (char)ReadPort(EC_CTRLPORT) & 0xff;			// or timeout iTimeoutBuf = 1000
-		if (!(data & (EC_STAT_IBF | EC_STAT_OBF))) break;
-		::Sleep(iTick);
-	}
-
-	if (data & EC_STAT_OBF) data2 = (char)ReadPort(EC_DATAPORT); //clear OBF if full
-
-	for (iTime = 0; iTime < iTimeout; iTime += iTick) { // wait for IOBF to clear
-		data = (char)ReadPort(EC_CTRLPORT) & 0xff;
-		if (!(data & EC_STAT_OBF)) {
+		if (!(data & (EC_STAT_IBF | EC_STAT_OBF))) {
 			iOK = true;
 			break;
 		}
 		::Sleep(iTick);
-	}  // try again after a moment
+	}
 
 	if (!iOK) return 0;
 	iOK = false;
