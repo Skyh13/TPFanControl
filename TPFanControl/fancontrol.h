@@ -246,8 +246,6 @@ class FANCONTROL
 		FANCONTROL(HINSTANCE hinstapp);
 		~FANCONTROL();
 
-		void Test(void);
-
 		int ProcessDialog();
 
         HWND GetDialogWnd() { return hwndDialog; }

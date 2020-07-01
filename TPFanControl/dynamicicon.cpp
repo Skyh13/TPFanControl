@@ -14,6 +14,7 @@ CDynamicIcon::CDynamicIcon(const char *line1,const char *line2, const int iFarbe
 
   //TODO: implement errorhandling
 
+
   HDC hDC = GetDC (0);
 
   memDC1_  = CreateCompatibleDC     (hDC);
