@@ -576,17 +576,15 @@ int FANCONTROL::SetFan(const char* source, int fanctrl, BOOL final)
 			ok = this->WriteByteToEC(TP_ECOFFSET_FAN_SWITCH, TP_ECOFFSET_FAN1);
 			ok = this->WriteByteToEC(TP_ECOFFSET_FAN, fanctrl);
 
-			::Sleep(300);
+			::Sleep(100);
 
 			// verify completion
-			ok = this->ReadByteFromEC(TP_ECOFFSET_FAN, &this->State.FanCtrl);
-			ok = this->WriteByteToEC(TP_ECOFFSET_FAN_SWITCH, TP_ECOFFSET_FAN1);
 			ok = this->ReadByteFromEC(TP_ECOFFSET_FAN, &this->State.FanCtrl);
 
 			if (this->State.FanCtrl == fanctrl)
 				break;
 
-			::Sleep(300);
+			::Sleep(100);
 		}
 
 		//
@@ -598,17 +596,15 @@ int FANCONTROL::SetFan(const char* source, int fanctrl, BOOL final)
 			ok = this->WriteByteToEC(TP_ECOFFSET_FAN_SWITCH, TP_ECOFFSET_FAN2);
 			ok = this->WriteByteToEC(TP_ECOFFSET_FAN, fanctrl);
 
-			::Sleep(300);
+			::Sleep(100);
 
 			// verify completion
-			ok = this->ReadByteFromEC(TP_ECOFFSET_FAN, &this->State.FanCtrl);
-			ok = this->WriteByteToEC(TP_ECOFFSET_FAN_SWITCH, TP_ECOFFSET_FAN2);
 			ok = this->ReadByteFromEC(TP_ECOFFSET_FAN, &this->State.FanCtrl);
 
 			if (this->State.FanCtrl == fanctrl)
 				break;
 
-			::Sleep(300);
+			::Sleep(100);
 		}
 
 		this->EcAccess.Unlock();
