@@ -72,6 +72,7 @@ class FANCONTROL
         struct FCSTATE {
 
 			char FanCtrl,
+				 FanSwitch,
 				 FanSpeedLo,
 				 FanSpeedHi;
 

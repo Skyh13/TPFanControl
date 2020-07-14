@@ -579,9 +579,10 @@ int FANCONTROL::SetFan(const char* source, int fanctrl, BOOL final)
 			::Sleep(100);
 
 			// verify completion
+			ok = this->ReadByteFromEC(TP_ECOFFSET_FAN_SWITCH, &this->State.FanSwitch);
 			ok = this->ReadByteFromEC(TP_ECOFFSET_FAN, &this->State.FanCtrl);
 
-			if (this->State.FanCtrl == fanctrl)
+			if (this->State.FanSwitch == TP_ECOFFSET_FAN1 && this->State.FanCtrl == fanctrl)
 				break;
 
 			::Sleep(100);
@@ -599,9 +600,10 @@ int FANCONTROL::SetFan(const char* source, int fanctrl, BOOL final)
 			::Sleep(100);
 
 			// verify completion
+			ok = this->ReadByteFromEC(TP_ECOFFSET_FAN_SWITCH, &this->State.FanSwitch);
 			ok = this->ReadByteFromEC(TP_ECOFFSET_FAN, &this->State.FanCtrl);
 
-			if (this->State.FanCtrl == fanctrl)
+			if (this->State.FanSwitch == TP_ECOFFSET_FAN2 && this->State.FanCtrl == fanctrl)
 				break;
 
 			::Sleep(100);
